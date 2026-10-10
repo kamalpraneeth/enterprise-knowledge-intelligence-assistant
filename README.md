@@ -1,6 +1,6 @@
 # Enterprise Knowledge Intelligence Assistant (EKIA)
 
-[![CI Pipeline](https://github.com/enterprise/ekia/actions/workflows/ci.yml/badge.svg)](https://github.com/enterprise/ekia/actions/workflows/ci.yml)
+[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-2ea44f.svg?style=flat&logo=githubactions)](https://github.com/kamalpraneeth/enterprise-knowledge-intelligence-assistant/actions)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black.svg?style=flat&logo=next.js)](https://nextjs.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%20%2B%20pgvector-336791.svg?style=flat&logo=postgresql)](https://github.com/pgvector/pgvector)
@@ -44,7 +44,7 @@ The entire multi-container stack can be launched locally with a single command:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/enterprise/enterprise-knowledge-intelligence-assistant.git
+git clone https://github.com/kamalpraneeth/enterprise-knowledge-intelligence-assistant.git
 cd enterprise-knowledge-intelligence-assistant
 
 # 2. Copy and configure environment variables

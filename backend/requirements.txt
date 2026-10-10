@@ -55,3 +55,4 @@ httpx==0.28.1
 # Utils
 python-dotenv==1.0.1
 tenacity==9.0.0
+scikit-learn==1.6.0

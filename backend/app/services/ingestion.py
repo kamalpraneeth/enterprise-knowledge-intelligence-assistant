@@ -165,6 +165,20 @@ async def ingest_document(document_id: str, db: AsyncSession) -> None:
         if not text.strip():
             raise ValueError("Document contains no extractable text")
 
+        # Knowledge base validation check: blocks ingestion on empty/tiny files or missing headers
+        try:
+            import sys
+            repo_root = Path(__file__).resolve().parent.parent.parent.parent
+            if str(repo_root) not in sys.path:
+                sys.path.insert(0, str(repo_root))
+            from scripts.validate_kb import validate_single_document
+            is_valid_doc, val_errs = validate_single_document(text, doc.filename, len(file_bytes))
+            if not is_valid_doc:
+                raise ValueError(f"Knowledge validation rejected document: {'; '.join(val_errs)}")
+        except ImportError:
+            if len(file_bytes) < 50 or len(text.split()) < 10:
+                raise ValueError("Knowledge validation rejected document: File too small or insufficient content.")
+
         doc.page_count = page_count
 
         # Delete existing chunks (re-indexing case)

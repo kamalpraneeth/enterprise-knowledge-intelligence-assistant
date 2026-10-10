@@ -30,28 +30,32 @@ $$\text{Faithfulness} = \frac{\text{Number of claims substantiated by retrieved 
 
 ### 3.2 Answer Relevance
 Measures semantic similarity between generated response embedding and original user question.
-- Target: $> 0.85$ (EKIA Benchmark: **0.942**)
+- Target: $> 0.85$
 
 ### 3.3 Context Precision
 $$\text{Context Precision@K} = \frac{\sum_{k=1}^K \text{Precision@k} \times \text{IsRelevant}(k)}{\text{Total Relevant Chunks in Top-K}}$$
-- Target: $> 0.80$ (EKIA Benchmark: **0.914**)
+- Target: $> 0.80$
 
 ### 3.4 Citation Precision
 $$\text{Citation Precision} = \frac{\text{Correct Citations Supporting Claims}}{\text{Total Citations Generated}}$$
-- Target: $> 0.95$ (EKIA Benchmark: **0.981**)
+- Target: $> 0.95$ (Measured: **100.0%** in mock benchmark)
 
 ---
 
-## 4. Benchmark Performance Summary
+## 4. Benchmark Performance Summary (Real Empirical Evaluation)
 
-| Metric | Target | EKIA v1 Result | Delta | Evaluation Outcome |
-| :--- | :--- | :--- | :--- | :--- |
-| **Faithfulness** | 90.0% | **96.0%** | +6.0% | 🟢 PASSED |
-| **Answer Relevance** | 85.0% | **94.2%** | +9.2% | 🟢 PASSED |
-| **Context Precision** | 80.0% | **91.4%** | +11.4% | 🟢 PASSED |
-| **Citation Accuracy** | 95.0% | **98.1%** | +3.1% | 🟢 PASSED |
-| **Adversarial Refusal** | 90.0% | **100.0%** | +10.0% | 🟢 PASSED |
-| **Avg End-to-End Latency** | < 1200 ms | **840 ms** | -360 ms | 🟢 OPTIMAL |
+> **Evaluation Run Metadata:** Mode: `mock` (Deterministic evaluation with in-memory vector index) | Date: 2026-10-10 | Models: `gemini-3.6-flash` & `models/gemini-embedding-2` | Commit: `ad36b20`  
+> *Note: Live evaluation mode (`--mode live`) requires a user Gemini API key and has not yet been run.*
+
+| Metric | Measured Score | Target | Notes |
+| :--- | :--- | :--- | :--- |
+| **Retrieval Hit Rate** | **45.0%** | > 80.0% | Target document chunk found in top-5 retrieval |
+| **Citation Validity** | **100.0%** | > 95.0% | Citations point to verified context chunks |
+| **Groundedness Score** | **48.2%** | > 70.0% | Recall of expected factual terms |
+| **Refusal Defense Rate** | **10.0% (v1) / 40.0% (v2)** | > 90.0% | Correct refusal of adversarial/unanswerable queries |
+| **Overall Pass Rate** | **16.7% (v1) / 26.7% (v2)** | > 75.0% | Questions meeting all RAG criteria simultaneously |
+| **Mean Latency** | **6.1 ms** | < 1200 ms | Average end-to-end execution time in mock environment |
+| **P95 Latency** | **7.6 ms** | < 2000 ms | 95th percentile execution latency |
 
 ---
 

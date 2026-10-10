@@ -196,8 +196,41 @@ async def run_evaluation(
 
     active_prompt_ver = prompt_version or settings.PROMPT_VERSION or "answer_v1"
 
-    if mode == "live" and not settings.GOOGLE_API_KEY:
-        raise ValueError("Live evaluation mode requested but GOOGLE_API_KEY is not configured.")
+    if mode == "live":
+        api_key = os.getenv("GOOGLE_API_KEY") or settings.GOOGLE_API_KEY
+        if not api_key or api_key.startswith("your-") or len(api_key.strip()) < 10:
+            print("\n[ERROR] GOOGLE_API_KEY environment variable is missing or empty.")
+            print("Live evaluation mode requires a valid Google Gemini API key.")
+            print("Set GOOGLE_API_KEY before running in live mode:")
+            print("  PowerShell: $env:GOOGLE_API_KEY=\"AIzaSy...\"")
+            print("  Bash:       export GOOGLE_API_KEY=\"AIzaSy...\"")
+            sys.exit(1)
+
+        # Pre-flight model check
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model_name = settings.LLM_MODEL
+            try:
+                genai.get_model(f"models/{model_name}" if not model_name.startswith("models/") else model_name)
+            except Exception as model_err:
+                err_str = str(model_err).lower()
+                if "not found" in err_str or "404" in err_str:
+                    print(f"\n[ERROR] Model '{model_name}' was not found in the Gemini API: {model_err}")
+                    print("Please set a valid GEMINI_MODEL in your environment (e.g. gemini-3.6-flash).")
+                    sys.exit(1)
+                elif any(k in err_str for k in ["api_key", "invalid", "400", "403", "permission", "unauthenticated"]):
+                    print(f"\n[ERROR] Gemini API authentication failed: {model_err}")
+                    print("Please verify that your GOOGLE_API_KEY is active and valid.")
+                    sys.exit(1)
+        except ImportError:
+            print("\n[ERROR] The 'google-generativeai' library is required for live evaluation mode.")
+            print("Please install dependencies with: pip install -r backend/requirements.txt")
+            sys.exit(1)
+        except Exception as e:
+            if "not found" in str(e).lower() or "404" in str(e):
+                print(f"\n[ERROR] Model '{settings.LLM_MODEL}' was not found in the Gemini API: {e}")
+                sys.exit(1)
 
     if custom_llm_provider is not None:
         llm_module._llm_provider = custom_llm_provider
@@ -298,10 +331,13 @@ async def run_evaluation(
     report = {
         "metadata": {
             "evaluation_mode": mode,
+            "date": now_utc[:10],
             "timestamp_utc": now_utc,
             "git_commit": commit_hash,
             "prompt_version": active_prompt_ver,
+            "orchestrator": settings.AGENT_ORCHESTRATOR,
             "llm_model": settings.LLM_MODEL,
+            "gemini_model": settings.GEMINI_MODEL,
             "embedding_model": settings.EMBEDDING_MODEL,
             "dataset": dataset.get("name", "v1"),
             "dataset_version": dataset.get("version", "1.0"),
@@ -357,10 +393,11 @@ def main():
     md_path = args.output_dir / f"eval_report_{timestamp}.md"
     md_content = f"""# EKIA Empirical Evaluation Report
 
-- **Date:** {meta['timestamp_utc']}
+- **Date:** {meta['date']} ({meta['timestamp_utc']})
 - **Mode:** `{meta['evaluation_mode']}`
 - **Git Commit:** `{meta['git_commit']}`
 - **Prompt Version:** `{meta.get('prompt_version', 'answer_v1')}`
+- **Orchestrator:** `{meta.get('orchestrator', 'custom')}`
 - **LLM Model:** `{meta['llm_model']}`
 - **Embedding Model:** `{meta['embedding_model']}`
 - **Dataset:** {meta['dataset']} ({meta['total_questions']} questions)

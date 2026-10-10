@@ -77,9 +77,9 @@ Submits a query to the conversational RAG engine.
       }
     ],
     "has_sufficient_evidence": true,
-    "retrieval_latency_ms": 142,
-    "generation_latency_ms": 698,
-    "total_latency_ms": 840,
+    "retrieval_latency_ms": 115,
+    "generation_latency_ms": 385,
+    "total_latency_ms": 500,
     "created_at": "2024-01-01T12:00:00Z"
   }
 }

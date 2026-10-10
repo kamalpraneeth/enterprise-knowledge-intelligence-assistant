@@ -61,6 +61,9 @@ jobs:
           npm ci
 
       - name: Next.js Production Build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_API_URL: "http://localhost:8000"
         run: |
           cd frontend
           npm run build

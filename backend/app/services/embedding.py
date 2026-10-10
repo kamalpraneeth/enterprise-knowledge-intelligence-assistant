@@ -56,11 +56,19 @@ class GeminiEmbeddingProvider(EmbeddingProvider):
 
         @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10))
         def _embed(batch: List[str]) -> List[List[float]]:
-            result = self._genai.embed_content(
-                model=self._model,
-                content=batch,
-                task_type="retrieval_document",
-            )
+            kwargs = {
+                "model": self._model,
+                "content": batch,
+                "task_type": "retrieval_document",
+            }
+            if settings.EMBEDDING_DIMENSION:
+                kwargs["output_dimensionality"] = settings.EMBEDDING_DIMENSION
+            try:
+                result = self._genai.embed_content(**kwargs)
+            except TypeError:
+                # If SDK version does not support output_dimensionality kwarg, fallback
+                kwargs.pop("output_dimensionality", None)
+                result = self._genai.embed_content(**kwargs)
             return result["embedding"] if len(batch) == 1 else [r for r in result["embedding"]]
 
         # Process in batches of 100

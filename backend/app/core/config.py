@@ -2,9 +2,9 @@
 Application configuration via environment variables.
 Uses pydantic-settings for validation and type safety.
 """
-from typing import Any, List, Union
+from typing import Any, List, Union, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 
 
 class Settings(BaseSettings):
@@ -30,11 +30,12 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str = ""
 
     # Embedding
-    EMBEDDING_MODEL: str = "models/text-embedding-004"
+    EMBEDDING_MODEL: str = "models/gemini-embedding-001"
     EMBEDDING_DIMENSION: int = 768
 
     # LLM
-    LLM_MODEL: str = "gemini-1.5-flash"
+    LLM_MODEL: str = "gemini-2.0-flash"
+    GEMINI_MODEL: Optional[str] = None
     LLM_TEMPERATURE: float = 0.1
     LLM_MAX_TOKENS: int = 2048
 
@@ -56,6 +57,12 @@ class Settings(BaseSettings):
 
     # Logging
     LOG_LEVEL: str = "INFO"
+
+    @model_validator(mode="after")
+    def sync_models(self) -> "Settings":
+        if self.GEMINI_MODEL:
+            self.LLM_MODEL = self.GEMINI_MODEL
+        return self
 
     @property
     def cors_origins_list(self) -> List[str]:

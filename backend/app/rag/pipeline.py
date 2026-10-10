@@ -39,9 +39,11 @@ class RAGResponse:
         generation_latency_ms: float,
         prompt_version: str,
         model_used: str,
+        retrieved_chunks: Optional[List[RetrievedChunk]] = None,
     ):
         self.answer = answer
         self.citations = citations
+        self.retrieved_chunks = retrieved_chunks or []
         self.has_sufficient_evidence = has_sufficient_evidence
         self.retrieval_latency_ms = retrieval_latency_ms
         self.generation_latency_ms = generation_latency_ms
@@ -132,6 +134,7 @@ async def run_rag_pipeline(
         generation_latency_ms=generation_latency_ms,
         prompt_version=PROMPT_VERSION,
         model_used=settings.LLM_MODEL,
+        retrieved_chunks=context_chunks,
     )
 
 

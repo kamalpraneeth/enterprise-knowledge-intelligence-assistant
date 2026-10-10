@@ -68,18 +68,24 @@ Once started:
 
 ## 📊 RAG Quality Benchmark Results
 
-| Metric | Target | EKIA v1 Result | Status |
-| :--- | :--- | :--- | :--- |
-| **Faithfulness (Groundedness)** | > 90% | **96.0%** | ✅ Exceeded |
-| **Answer Relevance** | > 85% | **94.2%** | ✅ Exceeded |
-| **Context Recall & Precision** | > 80% | **91.4%** | ✅ Exceeded |
-| **Citation Precision** | > 95% | **98.1%** | ✅ Exceeded |
-| **Adversarial Refusal Rate** | > 90% | **100.0%** | ✅ Exceeded |
-| **Avg End-to-End Latency** | < 1200ms | **840 ms** | ✅ Optimal |
+> **Evaluation Run Metadata:** Mode: `mock` (Deterministic evaluation with in-memory vector index) | Date: 2026-10-10 | Models: `gemini-2.0-flash` & `models/gemini-embedding-001` | Commit: `f6e2b55680`  
+> *Note: Live evaluation mode (`--mode live`) requires a user Gemini API key and has not yet been run.*
 
-To run the automated benchmark:
+| Metric | Measured Score | Target | Notes |
+| :--- | :--- | :--- | :--- |
+| **Retrieval Hit Rate** | **45.0%** | > 80.0% | Target document chunk found in top-5 retrieval |
+| **Citation Validity** | **100.0%** | > 95.0% | Citations point to verified context chunks |
+| **Groundedness Score** | **48.2%** | > 70.0% | Recall of expected factual terms |
+| **Refusal Defense Rate** | **10.0%** | > 90.0% | Correct refusal of adversarial/unanswerable queries |
+| **Overall Pass Rate** | **16.7%** | > 75.0% | Questions meeting all RAG criteria simultaneously |
+| **Mean Latency** | **4.9 ms** | < 1200 ms | Average end-to-end execution time in mock environment |
+| **P95 Latency** | **5.8 ms** | < 2000 ms | 95th percentile execution latency |
+
+To run the automated empirical benchmark:
 ```bash
-python evals/eval_runner.py
+python evals/eval_runner.py --mode mock
+# For live evaluation with Gemini API key:
+python evals/eval_runner.py --mode live
 ```
 Detailed methodology in [`docs/EVALUATION.md`](docs/EVALUATION.md).
 

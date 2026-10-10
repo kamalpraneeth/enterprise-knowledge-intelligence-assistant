@@ -75,9 +75,25 @@ class FakeLLMProvider(LLMProvider):
     """Deterministic fake LLM for unit tests."""
 
     async def generate(self, prompt: str, max_tokens: Optional[int] = None) -> str:
-        # Return a structured deterministic response based on prompt content
-        if "cannot determine" in prompt.lower() or "no sources" in prompt.lower():
+        prompt_lower = prompt.lower()
+        if "no sources" in prompt_lower or prompt_lower.strip() == "cannot determine the answer from available documents":
             return "I cannot determine the answer from the available documents."
+        
+        # If QA prompt with context section:
+        if "approved knowledge base sources" in prompt_lower:
+            # Check if there are any actual sources in the context section
+            parts = prompt.split("APPROVED KNOWLEDGE BASE SOURCES")
+            context_part = parts[-1].split("USER QUESTION")[0].strip() if len(parts) > 1 else ""
+            if not context_part or "[Source" not in context_part:
+                return "I cannot determine the answer from the available documents."
+            # Extract factual line from context to produce grounded mock answer
+            lines = [l.strip() for l in context_part.splitlines() if l.strip() and not l.startswith("[Source")]
+            snippet = lines[0] if lines else "standard procedures apply."
+            return (
+                f"Based on the available documents, {snippet} "
+                "**Sources:** [Source 1]"
+            )
+
         return (
             "Based on the available documents, the policy states that standard procedures apply. "
             "**Sources:** [Source 1] Test Document (Page 1)"

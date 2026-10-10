@@ -30,8 +30,8 @@ services:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-ekia_user}:${POSTGRES_PASSWORD:-ekia_password}@postgres:5432/${POSTGRES_DB:-ekia_db}
       SYNC_DATABASE_URL: postgresql://${POSTGRES_USER:-ekia_user}:${POSTGRES_PASSWORD:-ekia_password}@postgres:5432/${POSTGRES_DB:-ekia_db}
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
-      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-models/text-embedding-004}
-      LLM_MODEL: ${LLM_MODEL:-gemini-1.5-flash}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-models/gemini-embedding-001}
+      LLM_MODEL: ${LLM_MODEL:-gemini-2.0-flash}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
     volumes:

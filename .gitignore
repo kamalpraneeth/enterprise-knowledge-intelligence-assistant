@@ -81,3 +81,9 @@ backend/uploads/
 *.pem
 *.key
 *.crt
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl

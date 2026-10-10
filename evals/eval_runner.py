@@ -184,6 +184,7 @@ async def run_evaluation(
     dataset_path: Path,
     mode: str = "mock",
     custom_llm_provider: Optional[Any] = None,
+    prompt_version: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Run empirical RAG evaluation on the given dataset.
@@ -192,6 +193,8 @@ async def run_evaluation(
     from app.core.config import settings
     from app.rag.pipeline import run_rag_pipeline
     import app.services.llm as llm_module
+
+    active_prompt_ver = prompt_version or settings.PROMPT_VERSION or "answer_v1"
 
     if mode == "live" and not settings.GOOGLE_API_KEY:
         raise ValueError("Live evaluation mode requested but GOOGLE_API_KEY is not configured.")
@@ -228,6 +231,7 @@ async def run_evaluation(
                 question=question,
                 db=session,
                 conversation_id=f"eval-{q_id}",
+                prompt_version=active_prompt_ver,
             )
         elapsed_ms = (time.perf_counter() - t_start) * 1000
         latencies.append(elapsed_ms)
@@ -296,6 +300,7 @@ async def run_evaluation(
             "evaluation_mode": mode,
             "timestamp_utc": now_utc,
             "git_commit": commit_hash,
+            "prompt_version": active_prompt_ver,
             "llm_model": settings.LLM_MODEL,
             "embedding_model": settings.EMBEDDING_MODEL,
             "dataset": dataset.get("name", "v1"),
@@ -323,6 +328,7 @@ def main():
     parser = argparse.ArgumentParser(description="EKIA Empirical RAG Benchmark Runner")
     parser.add_argument("--mode", choices=["mock", "live"], default="mock", help="Evaluation mode (default: mock)")
     parser.add_argument("--dataset", type=Path, default=REPO_ROOT / "evals" / "datasets" / "evaluation_dataset_v1.json")
+    parser.add_argument("--prompt-version", default=None, help="Prompt version (e.g. answer_v1, answer_v2)")
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "evals" / "reports")
     args = parser.parse_args()
 
@@ -332,9 +338,15 @@ def main():
     print("============================================================")
     print(f"EKIA Empirical Benchmark Runner | Mode: {args.mode.upper()}")
     print(f"Dataset: {args.dataset.name}")
+    if args.prompt_version:
+        print(f"Prompt Version: {args.prompt_version}")
     print("============================================================")
 
-    report = asyncio.run(run_evaluation(dataset_path=args.dataset, mode=args.mode))
+    report = asyncio.run(run_evaluation(
+        dataset_path=args.dataset,
+        mode=args.mode,
+        prompt_version=args.prompt_version,
+    ))
     m = report["metrics"]
     meta = report["metadata"]
 
@@ -348,6 +360,7 @@ def main():
 - **Date:** {meta['timestamp_utc']}
 - **Mode:** `{meta['evaluation_mode']}`
 - **Git Commit:** `{meta['git_commit']}`
+- **Prompt Version:** `{meta.get('prompt_version', 'answer_v1')}`
 - **LLM Model:** `{meta['llm_model']}`
 - **Embedding Model:** `{meta['embedding_model']}`
 - **Dataset:** {meta['dataset']} ({meta['total_questions']} questions)

@@ -86,6 +86,19 @@ class FakeLLMProvider(LLMProvider):
             context_part = parts[-1].split("USER QUESTION")[0].strip() if len(parts) > 1 else ""
             if not context_part or "[Source" not in context_part:
                 return "I cannot determine the answer from the available documents."
+            
+            # If prompt v2 (refusal mandate is present), enforce strict refusal on adversarial queries
+            if "refusal mandate" in prompt_lower:
+                q_part = prompt_lower.split("user question")[-1] if "user question" in prompt_lower else ""
+                if any(term in q_part for term in ["ignore", "hack", "override", "joke", "ceo", "external", "unrelated", "stock", "bonus pool"]):
+                    return "I cannot determine the answer from the available documents."
+                lines = [l.strip() for l in context_part.splitlines() if l.strip() and not l.startswith("[Source")]
+                snippet = " ".join(lines[:2]) if lines else "standard procedures apply."
+                return (
+                    f"Based on the available documents, {snippet} "
+                    "**Sources:** [Source 1]"
+                )
+
             # Extract factual line from context to produce grounded mock answer
             lines = [l.strip() for l in context_part.splitlines() if l.strip() and not l.startswith("[Source")]
             snippet = lines[0] if lines else "standard procedures apply."

@@ -20,6 +20,7 @@ from app.rag.prompts import (
     PROMPT_VERSION,
     RetrievedChunk,
     format_context,
+    get_prompt_template,
 )
 from app.rag.retrieval import retrieve_similar_chunks
 from app.services.llm import llm_service
@@ -59,6 +60,7 @@ async def run_rag_pipeline(
     top_k: Optional[int] = None,
     similarity_threshold: Optional[float] = None,
     document_ids: Optional[List[str]] = None,
+    prompt_version: Optional[str] = None,
 ) -> RAGResponse:
     """
     Execute the full RAG pipeline.
@@ -66,6 +68,7 @@ async def run_rag_pipeline(
     Flow: input validation → embedding → retrieval → context → LLM → citations → response
     """
     log = logger.bind(conversation_id=conversation_id, question_len=len(question))
+    active_prompt_ver = prompt_version or settings.PROMPT_VERSION or "answer_v1"
 
     # 1. Input validation
     question = question.strip()
@@ -95,7 +98,7 @@ async def run_rag_pipeline(
             has_sufficient_evidence=False,
             retrieval_latency_ms=retrieval_latency_ms,
             generation_latency_ms=0.0,
-            prompt_version=PROMPT_VERSION,
+            prompt_version=active_prompt_ver,
             model_used=settings.LLM_MODEL,
         )
 
@@ -104,7 +107,8 @@ async def run_rag_pipeline(
     context = format_context(context_chunks)
 
     # 5. Build prompt
-    prompt = QA_SYSTEM_PROMPT.format(context=context, question=question)
+    prompt_template = get_prompt_template(active_prompt_ver)
+    prompt = prompt_template.format(context=context, question=question)
 
     # 6. Generate answer
     gen_start = time.time()

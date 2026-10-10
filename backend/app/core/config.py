@@ -39,7 +39,10 @@ class Settings(BaseSettings):
     LLM_TEMPERATURE: float = 0.1
     LLM_MAX_TOKENS: int = 2048
 
-    # RAG
+    # RAG & Prompt Engineering
+    PROMPT_VERSION: str = "answer_v1"
+    AGENT_ORCHESTRATOR: str = "custom"
+    LLM_PROVIDER: str = "gemini"
     CHUNK_SIZE: int = 512
     CHUNK_OVERLAP: int = 64
     TOP_K_RETRIEVAL: int = 5

@@ -35,7 +35,32 @@ def format_context(chunks: List[RetrievedChunk]) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-QA_SYSTEM_PROMPT = """You are EKIA, the Enterprise Knowledge Intelligence Assistant.
+from pathlib import Path
+from app.core.config import settings
+
+PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
+
+
+def get_prompt_template(version: Optional[str] = None) -> str:
+    """Load prompt template from versioned text file with fallback."""
+    ver = version or settings.PROMPT_VERSION or "answer_v1"
+    clean_ver = ver.strip().lower()
+    filename = (
+        clean_ver if clean_ver.endswith(".txt")
+        else (f"answer_{clean_ver}.txt" if not clean_ver.startswith("answer_") else f"{clean_ver}.txt")
+    )
+    file_path = PROMPTS_DIR / filename
+    if file_path.exists():
+        return file_path.read_text(encoding="utf-8")
+
+    fallback_file = PROMPTS_DIR / "answer_v1.txt"
+    if fallback_file.exists():
+        return fallback_file.read_text(encoding="utf-8")
+
+    return QA_SYSTEM_PROMPT_FALLBACK
+
+
+QA_SYSTEM_PROMPT_FALLBACK = """You are EKIA, the Enterprise Knowledge Intelligence Assistant.
 
 ## YOUR ROLE
 Answer employee questions using ONLY the information from the approved knowledge base sources provided below. 
@@ -60,6 +85,10 @@ Answer employee questions using ONLY the information from the approved knowledge
 {question}
 
 ## ANSWER"""
+
+# Dynamic prompt template loaded according to PROMPT_VERSION setting
+QA_SYSTEM_PROMPT = get_prompt_template()
+PROMPT_VERSION = settings.PROMPT_VERSION
 
 
 QUERY_REWRITE_PROMPT = """Rewrite the following user question to be more specific and suitable for document retrieval.

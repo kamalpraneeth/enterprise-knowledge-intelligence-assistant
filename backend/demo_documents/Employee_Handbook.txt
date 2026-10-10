@@ -1,0 +1,122 @@
+ACME CORPORATION
+EMPLOYEE HANDBOOK
+Version 3.2 | Effective Date: January 1, 2024
+
+================================================================================
+SECTION 1: WELCOME AND INTRODUCTION
+================================================================================
+
+Welcome to ACME Corporation. This handbook outlines the policies, benefits, and 
+expectations for all ACME employees. It is your responsibility to read, understand, 
+and comply with the policies described herein.
+
+This handbook applies to all full-time and part-time employees. Contract workers 
+and consultants should refer to their respective agreements.
+
+================================================================================
+SECTION 2: WORKING HOURS AND ATTENDANCE
+================================================================================
+
+2.1 Standard Working Hours
+
+Standard office hours are 9:00 AM to 6:00 PM, Monday through Friday. Employees 
+are expected to be available and productive during core business hours: 10:00 AM 
+to 4:00 PM.
+
+2.2 Flexible Working Arrangements
+
+Flexible working arrangements may be requested with at least 2 weeks' notice and 
+require written approval from your direct manager and HR.
+
+2.3 Attendance
+
+Regular attendance is critical to business operations. If you are unable to attend 
+work, you must notify your manager by 9:00 AM on the day of absence.
+
+================================================================================
+SECTION 3: ANNUAL LEAVE AND TIME OFF
+================================================================================
+
+3.1 Annual Leave Entitlement
+
+Full-time employees are entitled to 20 days of annual leave per year, accrued at 
+1.67 days per month. Part-time employees receive leave on a pro-rata basis.
+
+Unused leave may be carried over up to a maximum of 5 days into the next calendar 
+year. Leave in excess of this will be forfeited.
+
+3.2 Sick Leave
+
+Employees are entitled to 10 days of paid sick leave per year. A medical 
+certificate is required for absences of 3 or more consecutive days.
+
+3.3 Public Holidays
+
+ACME observes all national public holidays. Employees required to work on a public 
+holiday will receive compensatory time off.
+
+================================================================================
+SECTION 4: RESIGNATION AND TERMINATION
+================================================================================
+
+4.1 Notice Period
+
+Employees who wish to resign must provide a minimum of 30 days written notice to 
+their manager and HR. Senior managers and directors must provide 60 days notice.
+
+4.2 Exit Procedures
+
+Upon resignation or termination, employees must:
+- Return all company property including devices, access cards, and documents
+- Complete a formal handover with their manager
+- Attend an exit interview with HR
+- Have their accounts deactivated on the last working day
+
+================================================================================
+SECTION 5: CODE OF CONDUCT
+================================================================================
+
+5.1 Professional Behavior
+
+All employees are expected to conduct themselves professionally, treat colleagues 
+with respect, and uphold ACME's values of integrity, excellence, and collaboration.
+
+5.2 Disciplinary Action
+
+Policy violations are addressed through a progressive disciplinary process:
+- First violation: Verbal warning
+- Second violation: Written warning
+- Third violation: Final written warning
+- Repeated policy violations may result in written warnings, suspension, or 
+  termination depending on severity and frequency.
+
+Serious violations including fraud, harassment, or data breaches may result in 
+immediate termination without notice.
+
+================================================================================
+SECTION 6: EQUAL OPPORTUNITY AND ANTI-HARASSMENT
+================================================================================
+
+ACME is an equal opportunity employer. Discrimination or harassment based on race, 
+gender, age, religion, disability, or any other protected characteristic is 
+strictly prohibited.
+
+Any employee who experiences or witnesses harassment should report it immediately 
+to HR or use the anonymous reporting hotline at 1-800-ACME-EEO.
+
+================================================================================
+SECTION 7: CONFIDENTIALITY
+================================================================================
+
+Employees must maintain the confidentiality of proprietary business information, 
+client data, and internal strategies during and after employment. Breach of 
+confidentiality may result in legal action.
+
+================================================================================
+END OF EMPLOYEE HANDBOOK
+================================================================================
+
+Document Reference: ACME-HR-001
+Classification: Internal Use Only
+Owner: Human Resources Department
+Last Updated: January 1, 2024

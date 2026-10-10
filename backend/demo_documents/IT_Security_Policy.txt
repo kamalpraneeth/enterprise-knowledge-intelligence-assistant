@@ -1,0 +1,132 @@
+ACME CORPORATION
+IT SECURITY AND ACCEPTABLE USE POLICY
+Document Reference: ACME-IT-001
+Classification: Internal Use Only
+Effective Date: January 1, 2024
+
+================================================================================
+SECTION 1: PURPOSE
+================================================================================
+
+This policy defines acceptable use of ACME's information technology resources 
+and security requirements to protect company data, systems, and infrastructure.
+
+================================================================================
+SECTION 2: PASSWORD POLICY
+================================================================================
+
+2.1 Password Requirements
+
+All passwords for ACME systems must comply with the following:
+- Minimum length: 12 characters
+- Must include: uppercase letters, lowercase letters, numbers, and special characters
+- Must not contain the employee's name or username
+- Must not be reused from the previous 12 passwords
+- Must be changed every 90 days
+
+2.2 Multi-Factor Authentication
+
+Multi-factor authentication (MFA) is mandatory for:
+- Remote access to company systems
+- Email and collaboration tools
+- Financial systems
+- HR and payroll systems
+
+2.3 Password Management
+
+Employees should use the company-approved password manager. Writing passwords on 
+paper or storing them in plain text files is prohibited.
+
+================================================================================
+SECTION 3: DEVICE ACCEPTABLE USE
+================================================================================
+
+3.1 Company Devices
+
+Company devices must be used primarily for business purposes. Prohibited activities:
+- Accessing streaming services during work hours
+- Social media use on company devices during work hours
+- Installing unauthorized software without IT approval
+- Connecting to unsecured public Wi-Fi without VPN
+- Sharing company devices with family members or third parties
+
+3.2 Personal Devices (BYOD)
+
+Employees using personal devices for work must:
+- Register the device with IT
+- Install the company mobile device management (MDM) profile
+- Enable device encryption and passcode
+
+================================================================================
+SECTION 4: DATA SECURITY
+================================================================================
+
+4.1 Data Classification
+
+ACME data is classified as follows:
+- Public: May be shared openly
+- Internal: For employee use only
+- Confidential: Restricted access, encryption required
+- Restricted: Executive and need-to-know only
+
+4.2 Handling Confidential Data
+
+Confidential documents must be labeled, encrypted, and stored in approved secure 
+systems only. Confidential data must not be stored on personal devices or in 
+personal cloud storage.
+
+4.3 Email Security
+
+Company files and data must not be sent to personal email accounts. Only approved 
+company email and collaboration tools may be used for transmitting business 
+information.
+
+4.4 Encryption
+
+All confidential data in transit must use TLS 1.2 or higher. Data at rest on 
+portable devices must be encrypted using AES-256.
+
+================================================================================
+SECTION 5: INCIDENT REPORTING
+================================================================================
+
+5.1 Phishing
+
+Suspected phishing emails should be reported immediately to IT Security by 
+forwarding to security@acme.com and not clicking any links. Do not attempt to 
+respond to or engage with the suspected attacker.
+
+5.2 Security Incidents
+
+All security incidents including lost devices, unauthorized access, or suspicious 
+activity must be reported to IT Security within 1 hour of discovery.
+
+5.3 Reporting Channels
+
+- Email: security@acme.com
+- Helpdesk: Ticket category "Security Incident"
+- Urgent hotline: ext. 9911 (24/7)
+
+================================================================================
+SECTION 6: SOFTWARE AND LICENSING
+================================================================================
+
+6.1 Approved Software
+
+Only software approved by IT may be installed on company devices. A list of 
+approved applications is maintained in the IT Service Catalog.
+
+6.2 License Requests
+
+Software license requests must be submitted through the IT service desk with 
+business justification and manager approval. Unlicensed software may not be 
+used on company systems.
+
+6.3 Open Source
+
+Open source software usage must be approved by IT and Legal. License 
+compatibility must be verified before use in any company product.
+
+================================================================================
+END OF IT SECURITY POLICY
+================================================================================

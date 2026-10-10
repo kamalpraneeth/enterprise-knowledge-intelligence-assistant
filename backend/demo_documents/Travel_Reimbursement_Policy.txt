@@ -1,0 +1,136 @@
+ACME CORPORATION
+TRAVEL REIMBURSEMENT POLICY
+Document Reference: ACME-FIN-003
+Classification: Internal Use Only
+Effective Date: January 1, 2024
+
+================================================================================
+SECTION 1: PURPOSE AND SCOPE
+================================================================================
+
+This policy establishes guidelines for reimbursement of business travel expenses 
+incurred by ACME Corporation employees. It applies to all employees traveling on 
+approved business activities.
+
+================================================================================
+SECTION 2: TRAVEL APPROVAL
+================================================================================
+
+2.1 Domestic Travel
+
+All domestic business travel must be pre-approved by the employee's direct manager 
+at least 5 business days before departure.
+
+2.2 International Travel
+
+International business travel requires pre-approval from the department head and 
+VP of Finance at least 2 weeks in advance. A detailed travel itinerary and 
+business justification must be submitted with the request.
+
+================================================================================
+SECTION 3: AIR TRAVEL
+================================================================================
+
+3.1 Domestic Flights
+
+Employees are reimbursed for economy class tickets only for domestic travel. 
+Business class is not permitted for domestic flights regardless of flight duration.
+
+3.2 International Flights
+
+Business class may be approved for international flights exceeding 8 hours in 
+duration. Approval must be obtained from the VP of Finance prior to booking.
+
+3.3 Booking
+
+Employees must book flights through the company's approved travel portal. 
+Personal bookings will only be reimbursed if the portal was unavailable and 
+pre-authorization was obtained.
+
+================================================================================
+SECTION 4: HOTEL ACCOMMODATION
+================================================================================
+
+4.1 Domestic Hotels
+
+Hotel accommodation for domestic travel is reimbursed up to $150 per night. 
+Employees should book using approved corporate rates where available.
+
+4.2 International Hotels
+
+International hotel accommodation is reimbursed up to $250 per night. Premium 
+hotels require additional VP approval.
+
+4.3 Receipts
+
+Original hotel receipts must be submitted. Credit card statements alone are not 
+accepted as proof of expense.
+
+================================================================================
+SECTION 5: MEAL EXPENSES
+================================================================================
+
+5.1 Daily Meal Allowance
+
+Meals during business travel are reimbursed up to $50 per day with original 
+receipts. This allowance covers breakfast, lunch, and dinner combined.
+
+The daily breakdown is:
+- Breakfast: up to $10
+- Lunch: up to $15  
+- Dinner: up to $25
+
+5.2 Business Meals with Clients
+
+Business meals with clients may exceed the standard allowance with prior manager 
+approval. A list of attendees and business purpose must be documented.
+
+5.3 Alcohol
+
+Alcohol expenses are not reimbursable under any circumstances.
+
+================================================================================
+SECTION 6: LOCAL TRANSPORTATION
+================================================================================
+
+6.1 Ground Transportation
+
+Local transportation expenses including taxis, rideshare services, and public 
+transit are reimbursable with receipts. Airport transfers are fully reimbursable.
+
+6.2 Rental Cars
+
+Car rentals must be pre-approved and employees should select economy class 
+vehicles. GPS and insurance charges are reimbursable. Fuel costs are reimbursable 
+with receipts.
+
+6.3 Personal Vehicle
+
+Personal vehicle use for business travel is reimbursed at the approved government 
+mileage rate. Mileage must be logged in the expense system.
+
+================================================================================
+SECTION 7: EXPENSE REPORTING
+================================================================================
+
+7.1 Submission Timeline
+
+Expense reports must be submitted within 30 days of completing travel. 
+Late submissions may be declined at the discretion of Finance.
+
+7.2 Required Documentation
+
+All expense claims require:
+- Original receipts (not photocopies)
+- Purpose of expense
+- Names of attendees (for group expenses)
+- Manager approval
+
+7.3 Processing Time
+
+Approved expense reports are processed within 10 business days. Reimbursements 
+are made via payroll or direct bank transfer.
+
+================================================================================
+END OF TRAVEL REIMBURSEMENT POLICY
+================================================================================

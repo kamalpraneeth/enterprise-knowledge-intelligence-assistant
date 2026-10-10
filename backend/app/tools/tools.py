@@ -227,7 +227,8 @@ async def create_support_request(
     args: CreateSupportRequestInput, db: AsyncSession
 ) -> ToolResult:
     """
-    Create a support ticket. Requires explicit user confirmation.
+    Simulated support ticket tool that returns a generated ID, not an external integration.
+    Requires explicit user confirmation before generating the ticket ID.
     """
     start = time.time()
     if not args.confirmed:

@@ -377,7 +377,7 @@ Lines 105–111:
 | **Functional Testing using Defined Test Cases** | `evals/datasets/evaluation_dataset_v1.json` | **Partial** | Expand benchmark to 50 comprehensive cases; implement real LLM/mock evaluators; generate `FINDINGS_REPORT.md`. |
 | **Enterprise Security & Access Management** | `backend/app/core/security.py`, RBAC deps | **Partial** | Enforce rate limiting, add PII redactor (regex + AWS Comprehend adapter), audit logging, and `SECURITY.md`. |
 | **AWS / Cloud AI Services (Optional)** | `infra/terraform/*.tf` | **Partial** | Add Amazon Bedrock LLM and AWS Comprehend PII provider adapters (mocked in tests). |
-| **Enterprise System Integration** | Local tool executions in `tools.py` | **Partial** | Refactor support ticket creation into adapter interface supporting local DB and ServiceNow Table API. |
+| **Simulated Tool Execution** | Local tool executions in `tools.py` | **Complete** | Allowlisted tools (`search_knowledge_base`, `lookup_policy_record`, simulated `create_support_request`) with Pydantic validation and RBAC. |
 | **SQL Analytics & Monitoring** | `alembic` migrations | **Partial** | Add `/metrics` endpoint, `sql/analytics.sql` queries, and `scripts/analytics_report.py`. |
 | **Docker, CI/CD, SDLC, Documentation** | Dockerfiles, `ci.yml`, `README.md` | **Partial** | Add ruff, mypy, evaluation step to CI; live status badge; complete all architectural and operational docs. |
 

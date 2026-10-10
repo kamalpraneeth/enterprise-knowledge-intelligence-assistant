@@ -76,7 +76,7 @@ At the start of the audit:
 - **Remediation:**
   - Added structured audit logging for denied RBAC attempts in `require_role`.
   - Added audit logging for all document queries and tool executions.
-  - Implemented parameter sanitization (`_sanitize_tool_input`) to redact passwords, secrets, tokens, and PII from log output.
+  - Implemented sensitive-parameter masking in audit logs (`_sanitize_tool_input`) to redact passwords, secrets, tokens, and credentials from log output.
 
 ### HIGH-04: Static Mock CI Badge
 - **Location:** `README.md`
@@ -98,7 +98,7 @@ At the start of the audit:
 - **Root Cause:** Project claimed agent orchestration but lacked LangGraph state graph.
 - **Remediation:**
   - Added pinned `langgraph==1.2.14`.
-  - Built typed `StateGraph` in `backend/app/agents/graph.py` with nodes: `router`, `retrieve`, `generate`, `tool_node` (Pydantic validation + RBAC), `guardrail`, and `fallback`.
+  - Built typed `StateGraph` in `backend/app/agents/graph.py` with nodes: `router` (rule-based intent routing), `retrieve`, `generate`, `tool_node` (Pydantic validation, RBAC, and simulated support ticket tool), `guardrail`, and `fallback`.
   - Returned full step-by-step execution trace with node timings.
   - Added `AGENT_ORCHESTRATOR=custom|langgraph` setting (safe default: `custom`).
   - Documented graph in `docs/AGENT_GRAPH.md`.

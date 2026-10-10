@@ -23,8 +23,8 @@ Modern enterprises suffer from critical information bottlenecks and compliance v
 ### EKIA Solution
 EKIA solves these challenges with a defense-in-depth architecture:
 - **Verified Grounded RAG**: Answers synthesized exclusively from retrieved knowledge base chunks with strict bracketed citations (`[Source 1]`) and page numbers.
-- **Pre-Ingestion Knowledge Validation**: Document quality gate (`scripts/validate_kb.py`) enforcing size limits, metadata headers, duplicate IDs, and **TF-IDF cosine similarity deduplication** before embedding generation.
-- **Typed Agentic Orchestration**: LangGraph `StateGraph` state machine coordinating intent routing, retrieval, generation, allowlisted tools with Pydantic validation, and post-generation guardrails.
+- **Typed Agentic Orchestration**: LangGraph `StateGraph` state machine coordinating **rule-based intent routing**, retrieval, generation, allowlisted tools with Pydantic validation, and post-generation guardrails.
+- **Controlled Tool Execution & Auditing**: Allowlisted agent tools (knowledge search, policy record lookup, and a **simulated support ticket tool** returning a generated ID, not an external integration) with **sensitive-parameter masking in audit logs**.
 - **Multi-Cloud LLM Flexibility**: Modular provider abstraction supporting Google Gemini 2.0 Flash and AWS Bedrock (Claude 3 Haiku / Titan) using the default AWS IAM credential chain with zero hardcoded secrets.
 
 ---
@@ -47,7 +47,7 @@ When enabled via `AGENT_ORCHESTRATOR=langgraph`, execution follows a determinist
 
 ```mermaid
 flowchart TD
-    START([START]) --> Router[Router Node: Intent Classification]
+    START([START]) --> Router[Router Node: Rule-Based Intent Routing]
     Router -->|RAG Question| Retrieve[Retrieve Node: Top-K Vector Search]
     Retrieve --> Generate[Generate Node: Grounded Prompt Synthesis]
     Generate --> Guardrail[Guardrail Node: Citation & Grounding Check]

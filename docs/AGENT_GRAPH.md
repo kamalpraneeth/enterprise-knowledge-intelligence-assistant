@@ -39,9 +39,9 @@ flowchart TD
 
 | Node | Input State Dependencies | Responsibility | Output Mutation |
 | :--- | :--- | :--- | :--- |
-| **`router`** | `question`, `user_role` | Dispatches query to retrieval, tool invocation, or guardrail rejection based on intent and security markers. | `next_action`, `tool_name`, `trace` |
+| **`router`** | `question`, `user_role` | Dispatches query to retrieval, tool invocation, or guardrail rejection using **rule-based intent routing** and security markers. | `next_action`, `tool_name`, `trace` |
 | **`retrieve`** | `question`, `db` | Executes semantic vector retrieval against indexed enterprise document chunks with score thresholding. | `context_chunks`, `has_sufficient_evidence`, `next_action`, `trace` |
-| **`tool_node`** | `tool_name`, `tool_arguments`, `user_role` | Enforces Pydantic argument validation and Role-Based Access Control (RBAC). Executes registered tools (`search_knowledge_base`, `lookup_policy_record`, `get_document_metadata`, `create_support_request`). | `tool_result`, `next_action`, `trace` |
+| **`tool_node`** | `tool_name`, `tool_arguments`, `user_role` | Enforces Pydantic argument validation and Role-Based Access Control (RBAC). Executes registered tools (`search_knowledge_base`, `lookup_policy_record`, `get_document_metadata`, simulated `create_support_request` returning a generated ID, not an external integration). | `tool_result`, `next_action`, `trace` |
 | **`generate`** | `context_chunks`, `tool_result` | Formats context and executes configured LLM (`GeminiLLMProvider` or Bedrock/Mock) with versioned prompt template. | `draft_answer`, `citations`, `next_action`, `trace` |
 | **`guardrail`** | `draft_answer`, `context_chunks` | Validates citation indexes against retrieved documents, filters hallucinations, and screens for sensitive tokens. | `final_answer`, `status`, `next_action`, `trace` |
 | **`fallback`** | `state` | Delivers standard enterprise insufficient-evidence refusal response without exposing internal error details. | `final_answer`, `status="fallback"`, `trace` |

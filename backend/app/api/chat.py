@@ -6,16 +6,17 @@ from datetime import datetime
 from typing import List, Optional
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
+from app.core.rate_limit import limiter
 from app.db.session import get_db
 from app.models.conversation import (
-    Citation, Conversation, Message, MessageRole,
+    AuditEvent, Citation, Conversation, Message, MessageRole,
     ToolExecution, ToolStatus, UserFeedback
 )
 from app.models.user import User
@@ -67,8 +68,10 @@ class FeedbackRequest(BaseModel):
 
 
 @router.post("/chat", response_model=ChatResponse, summary="Ask the AI assistant")
+@limiter.limit("30/minute")
 async def chat(
-    request: ChatRequest,
+    request: Request,
+    body: ChatRequest,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -77,7 +80,7 @@ async def chat(
     Creates or continues a conversation.
     """
     # Get or create conversation
-    conversation_id = request.conversation_id
+    conversation_id = body.conversation_id
     if conversation_id:
         result = await db.execute(
             select(Conversation).where(
@@ -92,7 +95,7 @@ async def chat(
         conv = Conversation(
             id=str(uuid.uuid4()),
             user_id=current_user.id,
-            title=request.question[:80],
+            title=body.question[:80],
         )
         db.add(conv)
         await db.flush()
@@ -103,7 +106,7 @@ async def chat(
         id=str(uuid.uuid4()),
         conversation_id=conversation_id,
         role=MessageRole.USER,
-        content=request.question,
+        content=body.question,
     )
     db.add(user_msg)
     await db.flush()
@@ -111,11 +114,11 @@ async def chat(
     # Run RAG pipeline
     try:
         rag_response = await run_rag_pipeline(
-            question=request.question,
+            question=body.question,
             db=db,
             conversation_id=conversation_id,
-            top_k=request.top_k,
-            similarity_threshold=request.similarity_threshold,
+            top_k=body.top_k,
+            similarity_threshold=body.similarity_threshold,
         )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
@@ -146,6 +149,27 @@ async def chat(
         select(Citation).where(Citation.message_id == assistant_msg.id).order_by(Citation.rank)
     )
     citations = citations_result.scalars().all()
+
+    # Audit log document query event without raw sensitive PII
+    try:
+        audit = AuditEvent(
+            id=str(uuid.uuid4()),
+            user_id=current_user.id,
+            event_type="document_query",
+            resource_type="conversation",
+            resource_id=conversation_id,
+            details={
+                "query_length": len(body.question),
+                "citations_count": len(citations),
+                "has_sufficient_evidence": rag_response.has_sufficient_evidence,
+                "retrieval_ms": round(rag_response.retrieval_latency_ms, 2),
+                "total_latency_ms": round(rag_response.total_latency_ms, 2),
+            },
+            ip_address=request.client.host if request.client else None,
+        )
+        db.add(audit)
+    except Exception as e:
+        logger.error("Failed to write chat audit event", error=str(e))
 
     await db.commit()
 

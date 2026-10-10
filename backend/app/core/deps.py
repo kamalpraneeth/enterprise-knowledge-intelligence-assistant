@@ -55,10 +55,39 @@ async def get_current_active_user(
     return current_user
 
 
+import uuid
+from fastapi import Request
+from app.models.conversation import AuditEvent
+
+
 def require_role(*roles: UserRole):
-    """Dependency factory that enforces role-based access control."""
-    async def role_checker(current_user: User = Depends(get_current_user)) -> User:
+    """Dependency factory that enforces role-based access control and audit-logs violations."""
+    async def role_checker(
+        request: Request,
+        current_user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db),
+    ) -> User:
         if current_user.role not in roles:
+            try:
+                audit = AuditEvent(
+                    id=str(uuid.uuid4()),
+                    user_id=current_user.id,
+                    event_type="rbac_denied",
+                    resource_type="endpoint",
+                    resource_id=request.url.path,
+                    details={
+                        "attempted_role": current_user.role.value,
+                        "required_roles": [r.value for r in roles],
+                        "method": request.method,
+                        "path": request.url.path,
+                    },
+                    ip_address=request.client.host if request.client else None,
+                )
+                db.add(audit)
+                await db.commit()
+            except Exception as e:
+                logger.error("Failed to persist RBAC denial audit event", error=str(e))
+
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Insufficient permissions. Required: {[r.value for r in roles]}",

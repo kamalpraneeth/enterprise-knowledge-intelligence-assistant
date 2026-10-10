@@ -9,6 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
+from app.core.rate_limit import limiter
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_db
 from app.models.conversation import AuditEvent
@@ -48,6 +49,7 @@ class UserResponse(BaseModel):
 
 
 @router.post("/login", response_model=TokenResponse, summary="Login")
+@limiter.limit("20/minute")
 async def login(
     request: Request,
     data: LoginRequest,
@@ -114,7 +116,9 @@ async def me(current_user: User = Depends(get_current_user)):
 
 
 @router.post("/register", response_model=TokenResponse, status_code=201, summary="Register")
+@limiter.limit("20/minute")
 async def register(
+    request: Request,
     data: RegisterRequest,
     db: AsyncSession = Depends(get_db),
 ):

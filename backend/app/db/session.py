@@ -52,9 +52,15 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db():
-    """Create pgvector extension if not already present."""
-    async with engine.begin() as conn:
-        await conn.execute(
-            __import__("sqlalchemy").text("CREATE EXTENSION IF NOT EXISTS vector")
-        )
-    logger.info("Database initialized, pgvector extension ensured")
+    """Create pgvector extension if not already present and seed demo accounts."""
+    if engine.dialect.name != "sqlite":
+        async with engine.begin() as conn:
+            await conn.execute(
+                __import__("sqlalchemy").text("CREATE EXTENSION IF NOT EXISTS vector")
+            )
+        logger.info("Database initialized, pgvector extension ensured")
+
+    from app.db.seed import seed_demo_accounts
+    async with AsyncSessionLocal() as session:
+        await seed_demo_accounts(session)
+    logger.info("Demo accounts seeded successfully")

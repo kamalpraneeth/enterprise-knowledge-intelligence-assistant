@@ -1,10 +1,10 @@
 # Enterprise Knowledge Intelligence Assistant (EKIA)
 
-[![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-2ea44f.svg?style=flat&logo=githubactions)](https://github.com/kamalpraneeth/enterprise-knowledge-intelligence-assistant/actions)
+[![CI Pipeline](https://github.com/kamalpraneeth/enterprise-knowledge-intelligence-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/kamalpraneeth/enterprise-knowledge-intelligence-assistant/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black.svg?style=flat&logo=next.js)](https://nextjs.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%20%2B%20pgvector-336791.svg?style=flat&logo=postgresql)](https://github.com/pgvector/pgvector)
-[![Gemini](https://img.shields.io/badge/Google%20Gemini-1.5%20Pro-4285F4.svg?style=flat&logo=google)](https://ai.google.dev)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-2.0%20Flash-4285F4.svg?style=flat&logo=google)](https://ai.google.dev)
 [![Terraform](https://img.shields.io/badge/Terraform-AWS%20IaC-7B42BC.svg?style=flat&logo=terraform)](https://www.terraform.io)
 
 **Enterprise Knowledge Intelligence Assistant (EKIA)** is a production-grade Generative AI and Decision Science application built for high-reliability enterprise document querying, compliance policy navigation, and agentic task execution.

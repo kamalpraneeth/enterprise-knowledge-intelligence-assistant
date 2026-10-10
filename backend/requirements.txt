@@ -22,11 +22,14 @@ pydantic==2.10.3
 pydantic-settings==2.6.1
 email-validator==2.2.0
 
-# Google Gemini / LangChain
+# Google Gemini / LangChain / LangGraph / AWS
 google-generativeai==0.8.3
 langchain==0.3.9
 langchain-google-genai==2.0.5
 langchain-community==0.3.9
+langchain-core==1.6.9
+langgraph==1.2.14
+boto3==1.43.111
 
 # Document Processing
 pypdf==5.1.0
@@ -38,7 +41,7 @@ httpx==0.28.1
 aiofiles==24.1.0
 
 # Rate Limiting
-slowapi==0.1.9
+slowapi==0.1.10
 
 # Logging & Monitoring
 structlog==24.4.0

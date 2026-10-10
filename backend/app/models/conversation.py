@@ -61,7 +61,7 @@ class Message(Base):
         String(36), ForeignKey("conversations.id", ondelete="CASCADE"), nullable=False, index=True
     )
     role: Mapped[MessageRole] = mapped_column(
-        SAEnum(MessageRole, name="message_role"), nullable=False
+        SAEnum(MessageRole, name="message_role", values_callable=lambda x: [e.value for e in x]), nullable=False
     )
     content: Mapped[str] = mapped_column(Text, nullable=False)
     retrieval_latency_ms: Mapped[float] = mapped_column(Float, nullable=True)
@@ -118,7 +118,7 @@ class ToolExecution(Base):
     input_args: Mapped[dict] = mapped_column(JSON, nullable=True)
     output: Mapped[dict] = mapped_column(JSON, nullable=True)
     status: Mapped[ToolStatus] = mapped_column(
-        SAEnum(ToolStatus, name="tool_status"), nullable=False
+        SAEnum(ToolStatus, name="tool_status", values_callable=lambda x: [e.value for e in x]), nullable=False
     )
     duration_ms: Mapped[float] = mapped_column(Float, nullable=True)
     error_category: Mapped[str] = mapped_column(String(100), nullable=True)

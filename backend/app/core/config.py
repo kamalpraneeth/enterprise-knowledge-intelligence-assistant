@@ -2,7 +2,7 @@
 Application configuration via environment variables.
 Uses pydantic-settings for validation and type safety.
 """
-from typing import List
+from typing import Any, List, Union
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 
@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     ALLOWED_EXTENSIONS: str = "pdf,txt,docx"
 
     # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    CORS_ORIGINS: Any = "http://localhost:3000,http://localhost:3001"
 
     # Rate Limiting
     RATE_LIMIT_PER_MINUTE: int = 20
@@ -57,12 +57,21 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
-    @field_validator("CORS_ORIGINS", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v):
+    @property
+    def cors_origins_list(self) -> List[str]:
+        v = self.CORS_ORIGINS
+        if isinstance(v, list):
+            return v
         if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v
+            v_strip = v.strip()
+            if v_strip.startswith("[") and v_strip.endswith("]"):
+                import json
+                try:
+                    return json.loads(v_strip)
+                except Exception:
+                    pass
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return ["http://localhost:3000", "http://localhost:3001"]
 
     @property
     def allowed_extensions_list(self) -> List[str]:

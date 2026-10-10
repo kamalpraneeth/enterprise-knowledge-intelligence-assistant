@@ -38,7 +38,7 @@ class Document(Base):
     title: Mapped[str] = mapped_column(String(512), nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     status: Mapped[DocumentStatus] = mapped_column(
-        SAEnum(DocumentStatus, name="document_status"),
+        SAEnum(DocumentStatus, name="document_status", values_callable=lambda x: [e.value for e in x]),
         default=DocumentStatus.PENDING,
         nullable=False,
     )

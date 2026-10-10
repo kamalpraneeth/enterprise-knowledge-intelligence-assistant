@@ -46,7 +46,7 @@ class EvaluationRun(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     dataset_id: Mapped[str] = mapped_column(String(36), ForeignKey("evaluation_datasets.id", ondelete="SET NULL"), nullable=True)
-    status: Mapped[EvaluationRunStatus] = mapped_column(SAEnum(EvaluationRunStatus, name="eval_run_status"), default=EvaluationRunStatus.PENDING)
+    status: Mapped[EvaluationRunStatus] = mapped_column(SAEnum(EvaluationRunStatus, name="eval_run_status", values_callable=lambda x: [e.value for e in x]), default=EvaluationRunStatus.PENDING)
     total_questions: Mapped[int] = mapped_column(Integer, default=0)
     completed_questions: Mapped[int] = mapped_column(Integer, default=0)
     avg_retrieval_precision: Mapped[float] = mapped_column(Float, nullable=True)

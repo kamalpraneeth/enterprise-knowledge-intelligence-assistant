@@ -11,8 +11,8 @@ import pytest_asyncio
 # Force test environment before any app imports
 os.environ["APP_ENV"] = "test"
 os.environ["SECRET_KEY"] = "test-secret-key-for-testing-only-do-not-use-in-prod"
-os.environ["DATABASE_URL"] = "postgresql+asyncpg://ekia_user:ekia_password@localhost:5432/ekia_test"
-os.environ["SYNC_DATABASE_URL"] = "postgresql://ekia_user:ekia_password@localhost:5432/ekia_test"
+os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
+os.environ["SYNC_DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["GOOGLE_API_KEY"] = ""
 
 from httpx import AsyncClient, ASGITransport

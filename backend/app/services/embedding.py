@@ -98,8 +98,8 @@ class FakeEmbeddingProvider(EmbeddingProvider):
         import hashlib
         import struct
         h = hashlib.sha256(text.encode()).digest()
-        # Repeat hash bytes to fill dimension
-        extended = (h * (self._dim // len(h) + 1))[: self._dim * 4]
+        needed_bytes = self._dim * 4
+        extended = (h * (needed_bytes // len(h) + 1))[:needed_bytes]
         floats = list(struct.unpack(f"{self._dim}f", extended))
         # Normalize
         mag = sum(x**2 for x in floats) ** 0.5 or 1.0

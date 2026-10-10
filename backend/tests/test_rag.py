@@ -4,7 +4,6 @@ Uses fake LLM and embedding providers.
 """
 import pytest
 from app.rag.prompts import (
-    chunk_text_for_test,
     format_context,
     RetrievedChunk,
     INSUFFICIENT_EVIDENCE_RESPONSE,

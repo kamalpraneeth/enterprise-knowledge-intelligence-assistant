@@ -118,14 +118,127 @@ class FakeLLMProvider(LLMProvider):
             yield word + " "
 
 
+class BedrockLLMProvider(LLMProvider):
+    """
+    AWS Bedrock LLM provider.
+    Uses boto3 with AWS's default credential chain only (IAM instance profile,
+    ECS task execution role, Kubernetes ServiceAccount token, or standard AWS environment vars).
+    Never hardcodes or requires raw access keys.
+    """
+
+    def __init__(self, model_id: Optional[str] = None, region_name: Optional[str] = None):
+        import boto3
+        self.model_id = model_id or settings.BEDROCK_MODEL_ID
+        self.region_name = region_name or settings.AWS_REGION
+        # Uses default credential chain ONLY — no access keys passed
+        self._client = boto3.client("bedrock-runtime", region_name=self.region_name)
+
+    async def generate(self, prompt: str, max_tokens: Optional[int] = None) -> str:
+        import json
+        max_output_tokens = max_tokens or settings.LLM_MAX_TOKENS
+
+        def _invoke():
+            if "amazon.titan" in self.model_id.lower():
+                payload = {
+                    "inputText": prompt,
+                    "textGenerationConfig": {
+                        "maxTokenCount": max_output_tokens,
+                        "temperature": settings.LLM_TEMPERATURE,
+                    },
+                }
+            else:
+                # Default: Anthropic Claude Messages format on Bedrock
+                payload = {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": max_output_tokens,
+                    "temperature": settings.LLM_TEMPERATURE,
+                    "messages": [{"role": "user", "content": prompt}],
+                }
+
+            response = self._client.invoke_model(
+                modelId=self.model_id,
+                body=json.dumps(payload),
+                contentType="application/json",
+                accept="application/json",
+            )
+            body = response["body"].read()
+            data = json.loads(body)
+            if "amazon.titan" in self.model_id.lower():
+                return data["results"][0]["outputText"]
+            elif "content" in data and len(data["content"]) > 0:
+                return data["content"][0]["text"]
+            elif "completion" in data:
+                return data["completion"]
+            return str(data)
+
+        try:
+            return await asyncio.to_thread(_invoke)
+        except Exception as e:
+            logger.error("Bedrock generation failed", error=str(e), model=self.model_id)
+            raise
+
+    async def generate_stream(self, prompt: str) -> AsyncGenerator[str, None]:
+        import json
+
+        def _stream():
+            if "amazon.titan" in self.model_id.lower():
+                payload = {
+                    "inputText": prompt,
+                    "textGenerationConfig": {
+                        "maxTokenCount": settings.LLM_MAX_TOKENS,
+                        "temperature": settings.LLM_TEMPERATURE,
+                    },
+                }
+            else:
+                payload = {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": settings.LLM_MAX_TOKENS,
+                    "temperature": settings.LLM_TEMPERATURE,
+                    "messages": [{"role": "user", "content": prompt}],
+                }
+            return self._client.invoke_model_with_response_stream(
+                modelId=self.model_id,
+                body=json.dumps(payload),
+                contentType="application/json",
+                accept="application/json",
+            )
+
+        try:
+            stream_response = await asyncio.to_thread(_stream)
+            event_stream = stream_response.get("body")
+            if event_stream:
+                for event in event_stream:
+                    chunk = event.get("chunk")
+                    if chunk:
+                        chunk_data = json.loads(chunk.get("bytes").decode("utf-8"))
+                        if "delta" in chunk_data and "text" in chunk_data["delta"]:
+                            yield chunk_data["delta"]["text"]
+                        elif "outputText" in chunk_data:
+                            yield chunk_data["outputText"]
+        except Exception as e:
+            logger.warning("Bedrock streaming fallback to non-streaming", error=str(e))
+            full_text = await self.generate(prompt)
+            for token in full_text.split(" "):
+                yield token + " "
+
+
 def get_llm_provider() -> LLMProvider:
     """Factory for the configured LLM provider."""
     if settings.APP_ENV == "test":
         return FakeLLMProvider()
-    if not settings.GOOGLE_API_KEY:
-        logger.warning("GOOGLE_API_KEY not set — using FakeLLMProvider")
+    
+    provider_name = settings.LLM_PROVIDER.lower().strip()
+    if provider_name == "bedrock":
+        return BedrockLLMProvider()
+    elif provider_name == "gemini":
+        if not settings.GOOGLE_API_KEY:
+            logger.warning("GOOGLE_API_KEY not set — using FakeLLMProvider")
+            return FakeLLMProvider()
+        return GeminiLLMProvider()
+    else:
+        logger.warning(f"Unknown LLM provider {provider_name} — using FakeLLMProvider")
         return FakeLLMProvider()
-    return GeminiLLMProvider()
+
 
 
 _llm_provider: Optional[LLMProvider] = None

@@ -43,6 +43,8 @@ class Settings(BaseSettings):
     PROMPT_VERSION: str = "answer_v1"
     AGENT_ORCHESTRATOR: str = "custom"
     LLM_PROVIDER: str = "gemini"
+    AWS_REGION: str = "us-east-1"
+    BEDROCK_MODEL_ID: str = "anthropic.claude-3-haiku-20240307-v1:0"
     CHUNK_SIZE: int = 512
     CHUNK_OVERLAP: int = 64
     TOP_K_RETRIEVAL: int = 5

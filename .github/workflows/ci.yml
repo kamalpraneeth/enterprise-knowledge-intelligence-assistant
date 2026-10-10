@@ -25,13 +25,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
-          pip install pytest pytest-asyncio pytest-cov httpx
+          pip install pytest pytest-asyncio pytest-cov httpx aiosqlite greenlet
 
       - name: Run Pytest Suite with Coverage
         env:
           GEMINI_API_KEY: "fake-test-key-for-ci"
           SECRET_KEY: "ci-test-secret-key-for-jwt-signing-enterprise"
           TESTING: "true"
+          APP_ENV: "test"
+          DATABASE_URL: "sqlite+aiosqlite:///:memory:"
+          SYNC_DATABASE_URL: "sqlite:///:memory:"
+          CORS_ORIGINS: '["http://localhost:3000"]'
         run: |
           cd backend
           pytest -v --tb=short

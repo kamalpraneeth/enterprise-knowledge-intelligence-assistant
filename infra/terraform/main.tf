@@ -15,7 +15,7 @@ provider "aws" {
       Project     = "EKIA"
       Environment = var.environment
       ManagedBy   = "Terraform"
-      Owner       = "Accenture-AI-Team"
+      Owner       = "Enterprise-AI-Team"
     }
   }
 }

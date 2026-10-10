@@ -9,8 +9,6 @@
 
 **Enterprise Knowledge Intelligence Assistant (EKIA)** is a production-grade Generative AI and Decision Science application built for high-reliability enterprise document querying, compliance policy navigation, and agentic task execution.
 
-Designed to demonstrate practical competencies required for **Accenture's AI – Hi Tech – Data Science Associate / Decision Science Practitioner Associate** role.
-
 ---
 
 ## 🌟 Key Capabilities
@@ -120,16 +118,10 @@ Detailed methodology in [`docs/EVALUATION.md`](docs/EVALUATION.md).
 │   ├── API.md            # REST API endpoint specifications
 │   ├── EVALUATION.md     # RAG quality benchmark report
 │   ├── DEPLOYMENT.md     # Deployment and runbook
-│   └── ACCENTURE_ALIGNMENT.md # Interview guide & skill mapping
+│   └── ARCHITECTURE.md   # Architectural design and flowcharts
 ├── docker-compose.yml    # Multi-container orchestration
 └── README.md
 ```
-
----
-
-## 🎯 Accenture Role Alignment & Interview Guide
-
-For a detailed breakdown of how EKIA satisfies each requirement for Accenture's **AI – Hi Tech – Data Science Associate / Decision Science Practitioner Associate** role, along with interview questions and STAR storyboards, read [`docs/ACCENTURE_ALIGNMENT.md`](docs/ACCENTURE_ALIGNMENT.md).
 
 ---
 

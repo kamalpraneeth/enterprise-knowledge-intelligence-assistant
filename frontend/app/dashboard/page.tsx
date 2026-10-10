@@ -99,7 +99,7 @@ export default function DashboardOverview() {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                  Accenture AI – Decision Science Portfolio
+                  Enterprise AI & Decision Science Platform
                 </span>
                 <span className="text-xs text-slate-400">Production RAG Architecture</span>
               </div>
